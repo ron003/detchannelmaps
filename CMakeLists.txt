@@ -38,6 +38,7 @@ daq_add_plugin( ICEBERGChannelMap duneChannelMap LINK_LIBRARIES detchannelmaps )
 daq_add_plugin( DummyChannelMap duneChannelMap TEST LINK_LIBRARIES detchannelmaps )
 
 daq_add_application( dummy_map_test dummy_map_test.cxx TEST LINK_LIBRARIES detchannelmaps )
+daq_add_application( run_channel_map_api run_channel_map_api.cxx LINK_LIBRARIES detchannelmaps )
 
 ##############################################################################
 # Unit Tests
