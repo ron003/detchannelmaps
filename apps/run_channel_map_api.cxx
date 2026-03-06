@@ -64,8 +64,8 @@ main(int argc, char **argv)
   }
 
   try {
-    auto map = dunedaq::detchannelmaps::make_map(plugin);
-    (void)channelmapfile; // kept for CLI compatibility; plugins may read it implicitly
+    auto map = dunedaq::detchannelmaps::make_map(plugin); // plugin is a string from cmdline --plugin, e.g. "ICEBERGChannelMap"
+    //(void)channelmapfile; // kept for CLI compatibility; plugins may read it implicitly
     unsigned int off = map->get_offline_channel_from_crate_slot_stream_chan(crate, slot, stream, chan);
     if (want_plane) {
       unsigned int plane = map->get_plane_from_offline_channel(off);
