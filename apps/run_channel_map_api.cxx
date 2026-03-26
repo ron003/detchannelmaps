@@ -12,6 +12,7 @@
 #include <exception>
 
 #include "detchannelmaps/TPCChannelMap.hpp"
+#include "TRACE/trace.h"
 
 int
 main(int argc, char **argv)
@@ -94,14 +95,27 @@ main(int argc, char **argv)
       }
 
       constexpr unsigned int n_chan_per_stream = 64;
+      constexpr unsigned int n_slot_offset = 2; // for ICEBERGChannelMap
+      const unsigned int out_stream_idx = (coords->channel / n_chan_per_stream) + (coords->fiber << 2);
       const unsigned int out_stream = ((coords->fiber & 0x1U) << 6) | ((coords->channel / n_chan_per_stream) & 0x3U);
       const unsigned int out_chan = coords->channel % n_chan_per_stream;
+      TLOG_DEBUG(1) << "Reverse lookup for offline channel " << off_chan
+                  << " gives crate: " << coords->crate
+                  << " fiber: " << coords->fiber
+                  << " channel: " << coords->channel
+                  << " slot: " << coords->slot
+                  << " stream idx: " << out_stream_idx
+                  << " stream: " << out_stream << " 0x" << std::hex << out_stream << std::dec
+                  << " stream chan: " << out_chan
+                  << " packet idx: " << ((coords->slot - n_slot_offset)<<3) + out_stream_idx;
 
+      std::cout << "crate: " << coords->crate << " slot: " << coords->slot << " stream: " << out_stream
+      << " strmchan: " << out_chan;
       if (want_plane) {
         unsigned int plane = map->get_plane_from_offline_channel(off_chan);
-        std::cout << coords->crate << " " << coords->slot << " " << out_stream << " " << out_chan << " " << plane << std::endl;
+        std::cout << " plane: " << plane << std::endl;
       } else {
-        std::cout << coords->crate << " " << coords->slot << " " << out_stream << " " << out_chan << std::endl;
+        std::cout << std::endl;
       }
     } else {
       unsigned int off = map->get_offline_channel_from_crate_slot_stream_chan(crate, slot, stream, chan);
