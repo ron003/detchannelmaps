@@ -1,7 +1,10 @@
+#ifndef ICEBERGCHANNELMAP_HPP_
+#define ICEBERGCHANNELMAP_HPP_
+
 #include "detchannelmaps/TPCChannelMap.hpp"
 #include "PD2HDChannelMapSP.h"
 
-#include "logging/Logging.hpp" // NOLINT
+#include <TRACE/trace.h>
 
 namespace dunedaq {
 namespace detchannelmaps {
@@ -20,7 +23,7 @@ public:
     std::string channel_map_file = detchannelmaps_share + "/config/iceberg/iceberg_wibeth_chanmap_v1.txt";
     m_channel_map.reset(new dune::PD2HDChannelMapSP());
     m_channel_map->ReadMapFromFile(channel_map_file);
-    TLOG_DEBUG(10) << "ICEBERGChannelMap Created";
+    TLOG(10) << "ICEBERGChannelMap Created";
   }
 
   ICEBERGChannelMap(const ICEBERGChannelMap&) = delete;            ///< ICEBERGChannelMap is not copy-constructible
@@ -86,8 +89,7 @@ private:
   
 };
 
-DEFINE_DUNE_DET_CHANNEL_MAP(dunedaq::detchannelmaps::ICEBERGChannelMap)
-
-
 } // namespace detchannelmaps
 } // namespace dunedaq
+
+#endif // ICEBERGCHANNELMAP_HPP_
